@@ -28,16 +28,8 @@
   ],
   "web_accessible_resources": [
     {
-      "matches": [
-        "https://www.airbnb.com/*",
-        "https://www.airbnb.de/*",
-        "https://www.airbnb.co.uk/*",
-        "https://www.airbnb.ca/*",
-        "https://www.airbnb.fr/*",
-        "https://www.airbnb.it/*",
-        "https://www.airbnb.es/*"
-      ],
-      "resources": ["assets/add.png"]
+      "resources": ["assets/logo.png"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
