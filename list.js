@@ -13,7 +13,7 @@ function buildList(visual_matches) {
   const referenceNode = document.getElementsByClassName("_mubbvpq")[0];
 
   // Iterate through the first 10 items in visual_matches
-  visual_matches.slice(0, 10).forEach((match) => {
+  visual_matches["data"].forEach((match) => {
     const button = document.createElement("button");
     button.style =
       "display: flex; align-items: center; gap: 10px; padding: 10px; border: none; background-color: #f5f5f5; cursor: pointer; border-radius: 8px; transition: background-color 0.3s;margin-bottom:10px;";
