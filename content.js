@@ -3,19 +3,15 @@ window.addEventListener("load", function () {
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       const mainImage = document.getElementById("FMP-target");
-      const found = document.createElement("div");
-      found.id = "imageFound";
-
-      if (mainImage && !document.getElementById("imageFound")) {
+      if (mainImage && !document.getElementById("getaway-list")) {
         console.log("mainImage", mainImage["src"]);
-        document.body.appendChild(found);
         chrome.runtime.sendMessage(
           {
             type: "searchImage",
             imageUrl: mainImage["src"],
           },
           (response) => {
-            console.log(response);
+            buildList(response["visual_matches"]);
           }
         );
       }

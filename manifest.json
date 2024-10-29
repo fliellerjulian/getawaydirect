@@ -23,7 +23,7 @@
         "https://www.airbnb.it/*",
         "https://www.airbnb.es/*"
       ],
-      "js": ["ExtPay.js", "content.js"]
+      "js": ["ExtPay.js", "content.js", "list.js"]
     }
   ],
   "web_accessible_resources": [
