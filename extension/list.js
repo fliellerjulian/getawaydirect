@@ -66,7 +66,7 @@ function createSkeletonSection() {
 
 // Function to render real sections with data
 function renderRealSections(list, matches) {
-  if (matches["success"]) {
+  if (!matches["success"]) {
     const errorSection = document.createElement("div");
     errorSection.style = "margin-bottom: 20px;";
     const errorText = document.createElement("p");
