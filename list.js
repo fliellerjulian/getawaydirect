@@ -31,7 +31,6 @@ function buildList(visual_matches) {
   list.appendChild(logoContainer);
 
   // Categorize visual_matches
-  // Categorize visual_matches
   let hasInstagram = false;
   let hasFacebook = false;
 
@@ -53,24 +52,40 @@ function buildList(visual_matches) {
     }
   });
 
-  // Create Section
-  function createSection(title, items) {
+  // Create Section with Info Tooltip
+  function createSection(title, items, infoText) {
     const section = document.createElement("div");
     section.style = "margin-bottom: 20px;";
 
     const sectionHeadingContainer = document.createElement("div");
-    sectionHeadingContainer.style = "display:flex;gap:10px;align-items:center;";
+    sectionHeadingContainer.style =
+      "display: flex; gap: 10px; align-items: center;";
 
     const headingTitle = document.createElement("h3");
     headingTitle.textContent = title;
     headingTitle.style = "margin-bottom: 10px; font-size: 16px;";
 
-    const headingInfoIcon = document.createElement("img");
-    headingInfoIcon.src = chrome.runtime.getURL(`assets/info.png`);
-    headingInfoIcon.style = "width: 16px; height: 16px;margin-bottom:10px;";
+    // Create the info icon
+    headingInfoIcon = document.createElement("div");
+    headingInfoIcon.className = "tooltip";
+    headingInfoIcon.style = `
+        position: relative;
+        display: inline-block;
+    `;
+    headingInfoIcon.innerHTML = `<img src="${chrome.runtime.getURL(
+      "assets/info.png"
+    )}" style="width: 16px; height: 16px; margin-bottom: 10px; cursor: pointer; position: relative;">`;
+
+    // Tooltip setup
+    const tooltipText = document.createElement("span");
+    tooltipText.textContent = infoText;
+    tooltipText.className = "tooltiptext";
+
+    headingInfoIcon.appendChild(tooltipText);
 
     sectionHeadingContainer.appendChild(headingTitle);
     sectionHeadingContainer.appendChild(headingInfoIcon);
+
     section.appendChild(sectionHeadingContainer);
 
     if (items.length === 0) {
@@ -109,10 +124,28 @@ function buildList(visual_matches) {
     return section;
   }
 
-  // Add sections to the list
-  list.appendChild(createSection("Possible Direct Links", direct));
-  list.appendChild(createSection("Other Portals", portals));
-  list.appendChild(createSection("Possible Socials", socials));
+  // Add sections to the list with info tooltips
+  list.appendChild(
+    createSection(
+      "Possible Direct Links",
+      direct,
+      "These are possible direct links to the host's website, where you can book directly."
+    )
+  );
+  list.appendChild(
+    createSection(
+      "Other Portals",
+      portals,
+      "Links to booking portals for the property, such as Expedia or Booking.com."
+    )
+  );
+  list.appendChild(
+    createSection(
+      "Possible Socials",
+      socials,
+      "Possible social media links to the host's profile, to contact them directly."
+    )
+  );
 
   // Insert the list into the page
   rightSide.insertBefore(list, referenceNode);

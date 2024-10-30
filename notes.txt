@@ -4,4 +4,8 @@ TODO
 - api
 - loading animation
 - fine tune filter
-- info hover for each section
+- store already made request locally
+
+
+FUTURE TOTODS
+- store already made requests in DB
