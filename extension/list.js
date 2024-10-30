@@ -66,11 +66,20 @@ function createSkeletonSection() {
 
 // Function to render real sections with data
 function renderRealSections(list, matches) {
-  //TODO if matches["success"] == false
+  if (matches["success"]) {
+    const errorSection = document.createElement("div");
+    errorSection.style = "margin-bottom: 20px;";
+    const errorText = document.createElement("p");
+    errorText.textContent =
+      "We’re having trouble retrieving the information right now. Please check your internet connection, or try again later. If the issue persists, please contact support.";
+    errorText.style = "color: #333; font-size:14px;";
+    errorSection.appendChild(errorText);
+    list.appendChild(errorSection);
+    return;
+  }
   let socials = matches["data"]["socials"] || [];
   let direct = matches["data"]["direct"] || [];
   let portals = matches["data"]["portals"] || [];
-  console.log("SOCIALS", socials);
   // Append categorized sections
   list.appendChild(
     createSection(
@@ -124,7 +133,6 @@ function createSection(title, items, infoText) {
   sectionHeadingContainer.appendChild(headingTitle);
   sectionHeadingContainer.appendChild(headingInfoIcon);
   section.appendChild(sectionHeadingContainer);
-
   if (items.length === 0) {
     const placeholder = document.createElement("p");
     placeholder.textContent = "No matches found";

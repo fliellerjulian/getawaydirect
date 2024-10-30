@@ -8,7 +8,6 @@ TODO
 - api
     - maybe match title & subtitle query
     - api submit
-    - api error hanlding -> show error in card
 
 - add btn to add direct link
 - payment integration
