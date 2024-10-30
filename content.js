@@ -2,22 +2,13 @@ window.addEventListener("load", function () {
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       const mainImage = document.getElementById("FMP-target");
-      const name = document
-        .getElementsByClassName("_1czgyoo")[0]
-        .querySelector("h1").textContent;
+      const titleContainer = document.getElementsByClassName("_1czgyoo")[0];
+      title = titleContainer
+        ? titleContainer.querySelector("h1").textContent
+        : null;
 
-      if (mainImage && !document.getElementById("getaway-list")) {
-        console.log("mainImage", mainImage["src"]);
-        chrome.runtime.sendMessage(
-          {
-            type: "searchImage",
-            imageUrl: mainImage["src"],
-            name: name,
-          },
-          (response) => {
-            buildList(response);
-          }
-        );
+      if (mainImage && title && !document.getElementById("getaway-list")) {
+        buildList(mainImage, title);
       }
     });
   });

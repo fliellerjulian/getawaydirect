@@ -28,7 +28,7 @@
         "https://www.airbnb.es/*"
       ],
       "js": ["ExtPay.js", "content.js", "list.js"],
-      "css": ["tooltip.css"]
+      "css": ["tooltip.css", "skeleton.css"]
     }
   ],
   "web_accessible_resources": [

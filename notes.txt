@@ -2,10 +2,10 @@ to create a production: zip -r extension.zip *
 
 TODO
 - api
-- loading animation
-- fine tune filter
-- store already made request locally
+- fine tune filter + expand list of portals
+- add btn to add direct link
 
 
 FUTURE TOTODS
 - store already made requests in DB
+- show customly added direct links
