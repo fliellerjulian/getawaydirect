@@ -2,3 +2,6 @@ to create a production: zip -r extension.zip *
 
 TODO
 - api
+- loading animation
+- fine tune filter
+- info hover for each section

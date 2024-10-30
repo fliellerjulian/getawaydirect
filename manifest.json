@@ -8,7 +8,11 @@
     "service_worker": "background.js"
   },
   "host_permissions": ["https://serpapi.com/*"],
-  "icons": {},
+  "icons": {
+    "16": "assets/logos/logo-16.png",
+    "48": "assets/logos/logo-48.png",
+    "128": "assets/logos/logo-128.png"
+  },
   "action": {
     "default_popup": "index.html"
   },
@@ -28,7 +32,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["assets/logo.png"],
+      "resources": ["assets/logo.png", "assets/info.png"],
       "matches": ["<all_urls>"]
     }
   ]

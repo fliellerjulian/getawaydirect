@@ -17,18 +17,18 @@ function buildList(visual_matches) {
   let portals = [];
 
   // Logo and Title
-  const logo = document.createElement("div");
-  logo.style =
+  const logoContainer = document.createElement("div");
+  logoContainer.style =
     "display: flex; align-items: center; margin-bottom: 20px; gap: 10px;";
   const logoIcon = document.createElement("img");
   logoIcon.src = chrome.runtime.getURL("assets/logo.png");
   logoIcon.style = "width: 20px; height: 20px;border-radius: 5px;";
-  logo.appendChild(logoIcon);
+  logoContainer.appendChild(logoIcon);
   const logoText = document.createElement("span");
   logoText.textContent = "getaway.direct";
   logoText.style = "font-size: 14px; font-weight: bold;color: #4D39FF;";
-  logo.appendChild(logoText);
-  list.appendChild(logo);
+  logoContainer.appendChild(logoText);
+  list.appendChild(logoContainer);
 
   // Categorize visual_matches
   // Categorize visual_matches
@@ -58,10 +58,20 @@ function buildList(visual_matches) {
     const section = document.createElement("div");
     section.style = "margin-bottom: 20px;";
 
-    const sectionTitle = document.createElement("h3");
-    sectionTitle.textContent = title;
-    sectionTitle.style = "margin-bottom: 10px; font-size: 16px;";
-    section.appendChild(sectionTitle);
+    const sectionHeadingContainer = document.createElement("div");
+    sectionHeadingContainer.style = "display:flex;gap:10px;align-items:center;";
+
+    const headingTitle = document.createElement("h3");
+    headingTitle.textContent = title;
+    headingTitle.style = "margin-bottom: 10px; font-size: 16px;";
+
+    const headingInfoIcon = document.createElement("img");
+    headingInfoIcon.src = chrome.runtime.getURL(`assets/info.png`);
+    headingInfoIcon.style = "width: 16px; height: 16px;margin-bottom:10px;";
+
+    sectionHeadingContainer.appendChild(headingTitle);
+    sectionHeadingContainer.appendChild(headingInfoIcon);
+    section.appendChild(sectionHeadingContainer);
 
     if (items.length === 0) {
       const placeholder = document.createElement("p");
