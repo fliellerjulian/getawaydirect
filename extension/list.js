@@ -1,4 +1,4 @@
-function buildList(mainImage, title) {
+function buildList(mainImage, title, subtitle) {
   if (document.getElementById("getaway-list")) {
     return; // Exit if the list is already present
   }
@@ -38,6 +38,7 @@ function buildList(mainImage, title) {
       type: "searchImage",
       imageUrl: mainImage.src,
       name: title,
+      subtitle: subtitle,
     },
     (response) => {
       // Remove skeletons and display actual data when the response arrives
@@ -65,30 +66,11 @@ function createSkeletonSection() {
 
 // Function to render real sections with data
 function renderRealSections(list, matches) {
-  let socials = [];
-  let direct = [];
-  let portals = [];
-  let hasInstagram = false;
-  let hasFacebook = false;
-
-  matches["data"].forEach((match) => {
-    if (match.source === "Instagram") {
-      if (!hasInstagram) {
-        socials.push(match);
-        hasInstagram = true; // Mark Instagram as added
-      }
-    } else if (match.source === "Facebook") {
-      if (!hasFacebook) {
-        socials.push(match);
-        hasFacebook = true; // Mark Facebook as added
-      }
-    } else if (["Expedia", "Booking.com"].includes(match.source)) {
-      portals.push(match); // Add to portals if source is Expedia or Booking.com
-    } else {
-      direct.push(match); // Add remaining sources to direct
-    }
-  });
-
+  //TODO if matches["success"] == false
+  let socials = matches["data"]["socials"] || [];
+  let direct = matches["data"]["direct"] || [];
+  let portals = matches["data"]["portals"] || [];
+  console.log("SOCIALS", socials);
   // Append categorized sections
   list.appendChild(
     createSection(

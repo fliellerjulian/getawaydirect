@@ -1,14 +1,23 @@
 to create a production: zip -r extension.zip *
 
+KEEP IN MIND
+- adjust API url & manifest
+
 TODO
+- fix hard coded subtitle (!)
 - api
+    - make API faster!!!!
+    - api submit
     - api error hanlding -> show error in card
+
 - add btn to add direct link
 - payment integration
 - website
 
 
 FUTURE TOTODS
+- add directo api
+- add verified tag
 - store already made requests in DB
 - show customly added direct links
 

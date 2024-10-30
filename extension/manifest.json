@@ -7,7 +7,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "host_permissions": ["https://serpapi.com/*"],
+  "host_permissions": ["http://127.0.0.1:5000/*"],
   "icons": {
     "16": "assets/logos/logo-16.png",
     "48": "assets/logos/logo-48.png",

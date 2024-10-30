@@ -16,13 +16,13 @@ app = Flask(__name__)
 def home():
     return jsonify({'message': 'Hello, how can I help?'})
 
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET'])
 def search():
     try:
-        request_data = request.get_json()
-        imageUrl = request_data.get('imageUrl')
-        title = request_data.get('title')
-        subtitle = request_data.get('subtitle')
+        request_data = request
+        imageUrl = request.args.get('imageUrl')
+        title = request.args.get('title')
+        subtitle = request.args.get('subtitle')
         
         res = {
             "direct" : [],

@@ -7,8 +7,16 @@ window.addEventListener("load", function () {
         ? titleContainer.querySelector("h1").textContent
         : null;
 
-      if (mainImage && title && !document.getElementById("getaway-list")) {
-        buildList(mainImage, title);
+      const subtitle =
+        "Gesamte Unterkunft: Privatunterkunft in Kecamatan Kuta Selatan, Indonesien";
+
+      if (
+        mainImage &&
+        title &&
+        subtitle &&
+        !document.getElementById("getaway-list")
+      ) {
+        buildList(mainImage, title, subtitle);
       }
     });
   });
