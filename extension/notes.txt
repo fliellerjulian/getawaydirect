@@ -6,7 +6,7 @@ KEEP IN MIND
 TODO
 - fix hard coded subtitle (!)
 - api
-    - make API faster!!!!
+    - maybe match title & subtitle query
     - api submit
     - api error hanlding -> show error in card
 
@@ -22,4 +22,5 @@ FUTURE TOTODS
 - show customly added direct links
 
 TEST URL:
-https://www.airbnb.de/rooms/934321421663034334
+https://www.airbnb.de/rooms/48112717 -> DE
+https://www.airbnb.de/rooms/934321421663034334 -> THAI
