@@ -30,7 +30,7 @@ def search():
 
         lensUrl = f'https://serpapi.com/search.json?engine=google_lens&url={imageUrl}&api_key={apikey}'
         searchUrl_title = f'https://serpapi.com/search.json?engine=google&q={urllib.parse.quote(title)}&api_key={apikey}'
-        searchUrl_subtitle = f'https://serpapi.com/search.json?engine=google&q={urllib.parse.quote(subtitle)}&api_key={apikey}'
+        #searchUrl_subtitle = f'https://serpapi.com/search.json?engine=google&q={urllib.parse.quote(subtitle)}&api_key={apikey}'
 
         # Define the functions to fetch data
         def fetch_data(url):
@@ -41,11 +41,11 @@ def search():
             futures = {
                 "lens": executor.submit(fetch_data, lensUrl),
                 "title": executor.submit(fetch_data, searchUrl_title),
-                "subtitle": executor.submit(fetch_data, searchUrl_subtitle)
+                #"subtitle": executor.submit(fetch_data, searchUrl_subtitle)
             }
             lensResponse = futures["lens"].result()
             searchResponse_title = futures["title"].result()
-            searchResponse_subtitle = futures["subtitle"].result()
+            #searchResponse_subtitle = futures["subtitle"].result()
 
         # Initialize flags for socials
         added_facebook = False
@@ -69,9 +69,9 @@ def search():
                 res["socials"].append(result)
                 added_instagram = True
             
-            # Check for matches in title and subtitle search results
-            elif (any(link in normalize_url(i["link"]) for i in searchResponse_title.get("organic_results", []))
-                  or any(link in normalize_url(i["link"]) for i in searchResponse_subtitle.get("organic_results", []))):
+            # Check for matches in title and subtitle search results -> removed subtitle for now
+            elif (any(link in normalize_url(i["link"]) for i in searchResponse_title.get("organic_results", []))):
+                  #or any(link in normalize_url(i["link"]) for i in searchResponse_subtitle.get("organic_results", []))):
                 if result["source"].lower() in [
                     "expedia", "booking.com", "hotels.com", "airbnb", "tripadvisor",
                     "travelocity", "kayak", "agoda", "orbitz", "priceline", "trivago",
@@ -82,12 +82,22 @@ def search():
                 else:
                     res["direct"].append(result)
 
-        print(res)
         return jsonify(res), 200
 
     except Exception as e:
         print(traceback.format_exc())
         return jsonify({'error': str(e)}), 500
 
+
+@app.route('/submit', methods=['GET'])
+def submit():
+    try:
+        current_url = request.args.get('current_url')
+        submitted_url = request.args.get('submitted_url')
+
+    except Exception as e:
+        print(traceback.format_exc())
+        return jsonify({'error': str(e)}), 500
+        
 if __name__ == '__main__':
     app.run()

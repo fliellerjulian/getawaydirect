@@ -1,6 +1,6 @@
 importScripts("ExtPay.js");
 
-var extpay = ExtPay("pinfold");
+var extpay = ExtPay("getawaydirect");
 extpay.startBackground();
 
 chrome.runtime.onMessage.addListener(function (

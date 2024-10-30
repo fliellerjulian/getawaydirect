@@ -4,21 +4,19 @@ KEEP IN MIND
 - adjust API url & manifest
 
 TODO
-- fix hard coded subtitle (!)
-- api
-    - maybe match title & subtitle query
-    - api submit
-
-- add btn to add direct link
-- payment integration
+- host API
 - website
 
 
 FUTURE TOTODS
+- api submit endpoint
+- add btn to add direct link
 - add directo api
 - add verified tag
 - store already made requests in DB
 - show customly added direct links
+
+-> maybe add subtitle search, for that: fix hard coded subtitle & match title & subtitle query
 
 TEST URL:
 https://www.airbnb.de/rooms/48112717 -> DE

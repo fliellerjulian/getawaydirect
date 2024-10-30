@@ -1,4 +1,12 @@
 window.addEventListener("load", function () {
+  const extpay = ExtPay("getawaydirect");
+  extpay.getUser().then((user) => {
+    if (!user.paid) {
+      extpay.openPaymentPage(
+        "Save an average of $35 per night! Skip the middleman and connect directly with property hosts for your next stay."
+      );
+    }
+  });
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       const mainImage = document.getElementById("FMP-target");
@@ -14,9 +22,16 @@ window.addEventListener("load", function () {
         mainImage &&
         title &&
         subtitle &&
-        !document.getElementById("getaway-list")
+        (!document.getElementById("getaway-list") ||
+          !document.getElementById("getaway-payment"))
       ) {
-        buildList(mainImage, title, subtitle);
+        extpay.getUser().then((user) => {
+          if (user.paid) {
+            buildList(mainImage, title, subtitle);
+          } else {
+            buildPaymentButton();
+          }
+        });
       }
     });
   });

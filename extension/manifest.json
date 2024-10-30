@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "getaway.direct: find direct hosts on AirBNB",
-  "version": "1.1",
-  "description": "todo",
+  "name": "Getaway.Direct - Find Direct Host Links for Airbnb Listings",
+  "version": "1.0",
+  "description": "Save an average of $35 per night! Skip the middleman and connect directly with property hosts for your next stay.",
   "permissions": ["storage", "activeTab"],
   "background": {
     "service_worker": "background.js"
@@ -27,7 +27,7 @@
         "https://www.airbnb.it/*",
         "https://www.airbnb.es/*"
       ],
-      "js": ["ExtPay.js", "content.js", "list.js"],
+      "js": ["ExtPay.js", "content.js", "list.js", "payment.js"],
       "css": ["tooltip.css", "skeleton.css"]
     }
   ],
