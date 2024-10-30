@@ -1,0 +1,16 @@
+to create a production: zip -r extension.zip *
+
+TODO
+- api
+    - api error hanlding -> show error in card
+- add btn to add direct link
+- payment integration
+- website
+
+
+FUTURE TOTODS
+- store already made requests in DB
+- show customly added direct links
+
+TEST URL:
+https://www.airbnb.de/rooms/934321421663034334
