@@ -10,9 +10,18 @@ chrome.runtime.onMessage.addListener(function (
 ) {
   if (message.type === "searchImage") {
     const url = `https://api.getaway.direct/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
-    // Send POST request to the server
     fetch(url)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          // Handle non-200 status codes by sending an error response
+          senderResponse({
+            success: false,
+            error: `Server returned status ${res.status}`,
+          });
+          return Promise.reject(new Error(`HTTP status ${res.status}`));
+        }
+        return res.json();
+      })
       .then((json) => {
         senderResponse({ success: true, data: json });
       })
