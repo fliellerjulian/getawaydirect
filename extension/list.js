@@ -1,4 +1,4 @@
-function buildList(mainImage, title, subtitle) {
+function buildList(mainImage, title, subtitle, location) {
   if (document.getElementById("getaway-list")) {
     return; // Exit if the list is already present
   }
@@ -39,6 +39,7 @@ function buildList(mainImage, title, subtitle) {
       imageUrl: mainImage.src,
       name: removeEmojisAndSpecialChars(title),
       subtitle: subtitle,
+      location: location,
     },
     (response) => {
       // Remove skeletons and display actual data when the response arrives

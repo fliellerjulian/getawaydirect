@@ -4,12 +4,12 @@ KEEP IN MIND
 - switch serpapikeys
 
 TODO
-- if title is not long enough, use subtitle as well!!!
 - website
-- index.html & beautify first pop for payment
+- index.html
 
 
 FUTURE TOTODS
+- index.html & beautify first pop for payment
 - add a blog to the website
 - api submit endpoint
 - add btn to add direct link

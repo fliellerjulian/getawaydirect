@@ -20,7 +20,7 @@ PORTAL_SOURCES = {
     "travelocity", "kayak", "agoda", "orbitz", "priceline", "trivago",
     "vrbo", "homeaway", "hoteltonight", "momondo", "skyscanner",
     "hostelworld", "ebookers", "cheapoair", "lastminute.com", "otelz",
-    "snaptravel"
+    "snaptravel","traum-ferienwohnungen","hotel-mix.de","fewo-direkt.de","immowelt","agoda.com"
 }
 
 async def fetch_data(url):
@@ -44,12 +44,21 @@ def search():
         imageUrl = request.args.get('imageUrl')
         title = request.args.get('title')
         subtitle = request.args.get('subtitle')
-
+        
+        location = request.args.get('location',None)
+        location_ = None
+        if location:
+            location = location.lower()
+            location_ = location.replace("ä","a").replace("ö","o").replace("ü","u").replace("ß","ss")
+        
         res = {
             "direct": [],
             "portals": [],
             "socials": []
         }
+        
+        if len(title) <= 20:
+            title = f"{title} {subtitle}"
 
         lensUrl = f'https://serpapi.com/search.json?engine=google_lens&url={imageUrl}&api_key={apikey}'
         searchUrl_title = f'https://serpapi.com/search.json?engine=google&q={urllib.parse.quote(title)}&api_key={apikey}'
@@ -67,27 +76,31 @@ def search():
             result["link"] = link
             source = result["source"].lower()
             
-            if ("airbnb" in result["source"].lower()
+            # skip airbnb and duplicates
+            if ("airbnb" in source
                 or any(link in i["link"] for i in res["direct"])
                 or any(link in i["link"] for i in res["portals"])
-                or any(link in i["link"] for i in res["socials"])):
+                ):
                 continue
-
+    
             # Social media handling with limit
-            if source == "facebook" and not added_facebook:
-                res["socials"].append(result)
-                added_facebook = True
-            elif source == "instagram" and not added_instagram:
-                res["socials"].append(result)
-                added_instagram = True
+            if source == "facebook":
+                if not added_facebook:
+                    res["socials"].append(result)
+                    added_facebook = True
+            elif source == "instagram":
+                if not added_instagram:
+                    res["socials"].append(result)
+                    added_instagram = True
 
-            # Check for matches in title search results
-            elif link in title_links:
+            # Check for matches in title search results && it´s also a likely match, if the location is in the title
+            elif link in title_links or (location and location in result["title"].lower() or location_ and location_ in result["title"].lower()):
                 if source in PORTAL_SOURCES:
                     res["portals"].append(result)
                 else:
                     res["direct"].append(result)
 
+        #print(res)
         return jsonify(res), 200
 
     except Exception as e:

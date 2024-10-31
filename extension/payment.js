@@ -32,7 +32,7 @@ function buildPaymentButton() {
   errorSection.style = "margin-bottom: 20px;";
   const errorText = document.createElement("p");
   errorText.innerHTML =
-    "<b>Save an average of $35 per night!</b> Skip the middleman and connect directly with property hosts for your next stay.";
+    "<b>Save an average of $35 per night!</b> Connect directly with property hosts for your next stay.";
 
   errorText.style = "color: #333; font-size:14px;";
   errorSection.appendChild(errorText);
@@ -51,7 +51,7 @@ function buildPaymentButton() {
   paymentButton.onclick = () => {
     // Open payment page
     extpay.openPaymentPage(
-      "Save an average of $35 per night! Skip the middleman and connect directly with property hosts for your next stay."
+      "Save an average of $35 per night! Connect directly with property hosts for your next stay."
     );
   };
 
