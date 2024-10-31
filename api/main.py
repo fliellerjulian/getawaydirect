@@ -1,15 +1,38 @@
 from flask import Flask, request, jsonify
-import requests
-import urllib.parse
+import asyncio
+import aiohttp
 import os
 from dotenv import load_dotenv
 import traceback
 from urls import normalize_url
-from concurrent.futures import ThreadPoolExecutor
+import nest_asyncio
+import urllib.parse
 
 load_dotenv()
+nest_asyncio.apply()  # Apply nest_asyncio to allow nested event loops
+
 apikey = os.environ['serp_api_key']
 app = Flask(__name__)
+
+# Define portal sources for easy matching
+PORTAL_SOURCES = {
+    "expedia", "booking.com", "hotels.com", "airbnb", "tripadvisor",
+    "travelocity", "kayak", "agoda", "orbitz", "priceline", "trivago",
+    "vrbo", "homeaway", "hoteltonight", "momondo", "skyscanner",
+    "hostelworld", "ebookers", "cheapoair", "lastminute.com", "otelz",
+    "snaptravel"
+}
+
+async def fetch_data(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            return await response.json()
+
+async def fetch_all_data(lensUrl, searchUrl_title):
+    return await asyncio.gather(
+        fetch_data(lensUrl),
+        fetch_data(searchUrl_title)
+    )
 
 @app.route('/', methods=['GET'])
 def home():
@@ -30,54 +53,37 @@ def search():
 
         lensUrl = f'https://serpapi.com/search.json?engine=google_lens&url={imageUrl}&api_key={apikey}'
         searchUrl_title = f'https://serpapi.com/search.json?engine=google&q={urllib.parse.quote(title)}&api_key={apikey}'
-        #searchUrl_subtitle = f'https://serpapi.com/search.json?engine=google&q={urllib.parse.quote(subtitle)}&api_key={apikey}'
 
-        # Define the functions to fetch data
-        def fetch_data(url):
-            return requests.get(url).json()
+        # Fetch data asynchronously
+        lensResponse, searchResponse_title = asyncio.run(fetch_all_data(lensUrl, searchUrl_title))
 
-        # Run requests concurrently
-        with ThreadPoolExecutor() as executor:
-            futures = {
-                "lens": executor.submit(fetch_data, lensUrl),
-                "title": executor.submit(fetch_data, searchUrl_title),
-                #"subtitle": executor.submit(fetch_data, searchUrl_subtitle)
-            }
-            lensResponse = futures["lens"].result()
-            searchResponse_title = futures["title"].result()
-            #searchResponse_subtitle = futures["subtitle"].result()
-
-        # Initialize flags for socials
+        # Process results
+        title_links = {normalize_url(i["link"]) for i in searchResponse_title.get("organic_results", [])}
         added_facebook = False
         added_instagram = False
 
-        # Process the results
         for result in lensResponse.get('visual_matches', []):
             link = normalize_url(result["link"])
-
-            if ("airbnb" in result["source"].lower()
-                or any(link in normalize_url(i["link"]) for i in res["direct"])
-                or any(link in normalize_url(i["link"]) for i in res["portals"])
-                or any(link in normalize_url(i["link"]) for i in res["socials"])):
-                continue
+            result["link"] = link
+            source = result["source"].lower()
             
-            # Check for socials
-            elif result["source"].lower() == "facebook" and not added_facebook:
+            if ("airbnb" in result["source"].lower()
+                or any(link in i["link"] for i in res["direct"])
+                or any(link in i["link"] for i in res["portals"])
+                or any(link in i["link"] for i in res["socials"])):
+                continue
+
+            # Social media handling with limit
+            if source == "facebook" and not added_facebook:
                 res["socials"].append(result)
                 added_facebook = True
-            elif result["source"].lower() == "instagram" and not added_instagram:
+            elif source == "instagram" and not added_instagram:
                 res["socials"].append(result)
                 added_instagram = True
-            
-            # Check for matches in title and subtitle search results -> removed subtitle for now
-            elif (any(link in normalize_url(i["link"]) for i in searchResponse_title.get("organic_results", []))):
-                  #or any(link in normalize_url(i["link"]) for i in searchResponse_subtitle.get("organic_results", []))):
-                if result["source"].lower() in [
-                    "expedia", "booking.com", "hotels.com", "airbnb", "tripadvisor",
-                    "travelocity", "kayak", "agoda", "orbitz", "priceline", "trivago",
-                    "vrbo", "homeaway", "hoteltonight", "momondo", "skyscanner",
-                    "hostelworld", "ebookers", "cheapoair", "lastminute.com", "otelz",
-                    "snaptravel"]:
+
+            # Check for matches in title search results
+            elif link in title_links:
+                if source in PORTAL_SOURCES:
                     res["portals"].append(result)
                 else:
                     res["direct"].append(result)
@@ -87,8 +93,8 @@ def search():
     except Exception as e:
         print(traceback.format_exc())
         return jsonify({'error': str(e)}), 500
-
-
+    
+    
 @app.route('/submit', methods=['GET'])
 def submit():
     try:
@@ -99,7 +105,8 @@ def submit():
         print(traceback.format_exc())
         return jsonify({'error': str(e)}), 500
 
-''' 
+'''
 if __name__ == '__main__':
     app.run()
 '''
+
