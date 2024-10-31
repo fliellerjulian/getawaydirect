@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener(function (
   senderResponse
 ) {
   if (message.type === "searchImage") {
-    const url = `http://127.0.0.1:5000/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
+    const url = `https://api.getaway.direct/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
     // Send POST request to the server
     fetch(url)
       .then((res) => res.json())
