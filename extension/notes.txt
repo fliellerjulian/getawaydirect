@@ -4,11 +4,14 @@ KEEP IN MIND
 - adjust API url & manifest
 
 TODO
+- if title is not long enough, use subtitle as well!!!
 - host API
 - website
+- index.html & beautify first pop for payment
 
 
 FUTURE TOTODS
+- add a blog to the website
 - api submit endpoint
 - add btn to add direct link
 - add directo api

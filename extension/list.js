@@ -99,7 +99,7 @@ function renderRealSections(list, matches) {
     createSection(
       "Possible Socials",
       socials,
-      "Social media links for direct contact."
+      "Possible Social media links for direct contact."
     )
   );
 }
