@@ -37,7 +37,7 @@ function buildList(mainImage, title, subtitle) {
     {
       type: "searchImage",
       imageUrl: mainImage.src,
-      name: title,
+      name: removeEmojisAndSpecialChars(title),
       subtitle: subtitle,
     },
     (response) => {

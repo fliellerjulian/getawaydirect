@@ -1,7 +1,10 @@
 to create a production: zip -r extension.zip *
 
+KEEP IN MIND
+- switch serpapikeys
 
 TODO
+- improve API speed (!)
 - if title is not long enough, use subtitle as well!!!
 - website
 - index.html & beautify first pop for payment
@@ -17,6 +20,7 @@ FUTURE TOTODS
 - show customly added direct links
 
 -> maybe add subtitle search, for that: fix hard coded subtitle & match title & subtitle query
+-> maybe add a query for title & subtitle as default
 
 TEST URL:
 https://www.airbnb.de/rooms/48112717 -> DE
