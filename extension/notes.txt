@@ -24,3 +24,4 @@ FUTURE TOTODS
 TEST URL:
 https://www.airbnb.de/rooms/48112717 -> DE
 https://www.airbnb.de/rooms/934321421663034334 -> THAI
+https://www.airbnb.de/rooms/41686796 -> Beach Baby
