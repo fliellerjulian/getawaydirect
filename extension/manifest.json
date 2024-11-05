@@ -3,7 +3,7 @@
   "name": "Getaway.Direct: Find Direct Host Links for Airbnb Listings",
   "version": "1.0",
   "description": "Save an average of $35 per night! Skip the middleman and connect directly with property hosts for your next stay.",
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"
   },
