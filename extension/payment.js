@@ -32,7 +32,7 @@ function buildPaymentButton() {
   errorSection.style = "margin-bottom: 20px;";
   const errorText = document.createElement("p");
   errorText.innerHTML =
-    "<b>Save an average of $35 per night!</b> Connect directly with property hosts for your next stay.";
+    "Out of Free Searches? Upgrade to <b>save an average of $35 per night</b> with direct bookings.";
 
   errorText.style = "color: #333; font-size:14px;";
   errorSection.appendChild(errorText);

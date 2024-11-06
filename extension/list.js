@@ -43,7 +43,9 @@ function buildList(mainImage, title, subtitle, location) {
     },
     (response) => {
       // Remove skeletons and display actual data when the response arrives
+      incrementSearchCount();
       list.removeChild(skeletonSection);
+
       renderRealSections(list, response);
     }
   );

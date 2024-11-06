@@ -4,3 +4,12 @@ function removeEmojisAndSpecialChars(text) {
     ""
   );
 }
+
+function incrementSearchCount() {
+  chrome.storage.local.get(["searchCount"], function (result) {
+    //console.log(result.searchCount);
+    chrome.storage.local.set({
+      searchCount: result.searchCount ? result.searchCount + 1 : 1,
+    });
+  });
+}
