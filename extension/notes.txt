@@ -1,10 +1,7 @@
 to create a production: zip -r extension.zip *
 
-KEEP IN MIND
-- switch serpapikeys
 
 TODO
-- website
 - index.html
 
 
