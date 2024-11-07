@@ -1,5 +1,5 @@
 window.addEventListener("load", function () {
-  const extpay = ExtPay("getawaydirect");
+  const extpay = ExtPay("getawaydirect-onetime");
   /*extpay.getUser().then((user) => {
     if (!user.paid) {
       extpay.openPaymentPage(

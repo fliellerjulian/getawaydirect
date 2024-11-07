@@ -3,7 +3,7 @@ function buildPaymentButton() {
     return; // Exit if the paymebt button is already present
   }
 
-  const extpay = ExtPay("getawaydirect");
+  const extpay = ExtPay("getawaydirect-onetime");
 
   const list = document.createElement("div");
   list.id = "getaway-payment";
