@@ -60,7 +60,7 @@ def search():
         if len(title) <= 20:
             title = f"{title} {subtitle}"
 
-        lensUrl = f'https://serpapi.com/search.json?engine=google_lens&url={imageUrl}&api_key={apikey}'
+        lensUrl = f'https://serpapi.com/search.json?engine=google_lens&url={imageUrl.split("?")[0]}&api_key={apikey}'
         searchUrl_title = f'https://serpapi.com/search.json?engine=google&q={urllib.parse.quote(title)}&api_key={apikey}'
 
         # Fetch data asynchronously
