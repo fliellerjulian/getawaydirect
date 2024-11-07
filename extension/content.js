@@ -51,7 +51,7 @@ window.addEventListener("load", function () {
             !document.getElementById("getaway-payment"))
         ) {
           extpay.getUser().then((user) => {
-            if (user.paid || result.searchCount < 5) {
+            if (user.paid || !result.searchCount || result.searchCount < 5) {
               buildList(mainImage, title, subtitle, location);
             } else {
               buildPaymentButton();
