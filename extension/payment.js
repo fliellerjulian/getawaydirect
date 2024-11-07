@@ -1,5 +1,8 @@
 function buildPaymentButton() {
-  if (document.getElementById("getaway-payment")) {
+  if (
+    document.getElementById("getaway-payment") ||
+    document.getElementById("getaway-list")
+  ) {
     return; // Exit if the paymebt button is already present
   }
 
