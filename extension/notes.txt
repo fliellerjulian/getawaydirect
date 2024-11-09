@@ -1,12 +1,10 @@
 to create a production: zip -r extension.zip *
 
-
 TODO
 - index.html
 
-
 FUTURE TOTODS
-- index.html & beautify first pop for payment
+- index.html
 - add a blog to the website
 - api submit endpoint
 - add btn to add direct link

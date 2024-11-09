@@ -1,21 +1,15 @@
 window.addEventListener("load", function () {
   const extpay = ExtPay("getawaydirect-onetime");
-  /*extpay.getUser().then((user) => {
-    if (!user.paid) {
-      extpay.openPaymentPage(
-        "Save an average of $35 per night! Skip the middleman and connect directly with property hosts for your next stay."
-      );
-    }
-  });*/
+
   const observer = new MutationObserver((mutations) => {
     chrome.storage.local.get(["searchCount"], function (result) {
       mutations.forEach((mutation) => {
         //get needed data for
         const mainImage = document.getElementById("FMP-target");
-        const titleContainer = document.getElementsByClassName("_1czgyoo")[0];
-        title = titleContainer
-          ? titleContainer.querySelector("h1").textContent
-          : null;
+        const titleContainer = document.querySelector(
+          "#site-content > div > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div > div > div > div > div > section > div > div._t0tx82 > div > h1"
+        );
+        title = titleContainer ? titleContainer.textContent : null;
 
         const subtitleContainer = document.querySelector(
           "#site-content > div > div:nth-child(1) > div:nth-child(3) > div > div._16e70jgn > div > div:nth-child(1) > div > div > div > section > div.toieuka.atm_c8_2x1prs.atm_g3_1jbyh58.atm_fr_11a07z3.atm_cs_10d11i2.atm_c8_sz6sci__oggzyc.atm_g3_17zsb9a__oggzyc.atm_fr_kzfbxz__oggzyc.dir.dir-ltr > h2"
@@ -30,7 +24,6 @@ window.addEventListener("load", function () {
         // Get actual location -> First, select the container safely
         const locationContainer =
           document.getElementsByClassName("_1t2xqmi")[0];
-        // Use a safer approach to retrieve the location text if the container is present
         let location = null;
         if (locationContainer) {
           // Create a clone of the element to avoid triggering events on the actual DOM
@@ -47,15 +40,11 @@ window.addEventListener("load", function () {
           title &&
           subtitle &&
           MainLocationContainer &&
-          (!document.getElementById("getaway-list") ||
-            !document.getElementById("getaway-payment"))
+          !document.getElementById("getaway-list")
         ) {
           extpay.getUser().then((user) => {
-            if (user.paid || !result.searchCount || result.searchCount < 5) {
-              buildList(mainImage, title, subtitle, location);
-            } else {
-              buildPaymentButton();
-            }
+            const isTrial = !result.searchCount || result.searchCount < 5;
+            buildList(user.paid, isTrial, mainImage, title, subtitle, location);
           });
         }
       });
