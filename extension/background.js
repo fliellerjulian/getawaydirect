@@ -1,8 +1,3 @@
-importScripts("ExtPay.js");
-
-var extpay = ExtPay("getawaydirect-onetime");
-extpay.startBackground();
-
 chrome.runtime.onMessage.addListener(function (
   message,
   sender,

@@ -1,4 +1,4 @@
-function buildList(isPaid, isTrial, mainImage, title, subtitle, location) {
+function buildList(mainImage, title, subtitle, location) {
   if (document.getElementById("getaway-list")) {
     return; // Exit if the list is already present
   }
@@ -43,10 +43,9 @@ function buildList(isPaid, isTrial, mainImage, title, subtitle, location) {
     },
     (response) => {
       // Remove skeletons and display actual data when the response arrives
-      incrementSearchCount();
       list.removeChild(skeletonSection);
 
-      renderRealSections(isPaid, isTrial, list, response);
+      renderRealSections(list, response);
     }
   );
 }
@@ -68,7 +67,7 @@ function createSkeletonSection() {
 }
 
 // Function to render real sections with data
-function renderRealSections(isPaid, isTrial, list, matches) {
+function renderRealSections(list, matches) {
   if (!matches["success"]) {
     const errorSection = document.createElement("div");
     errorSection.style = "margin-bottom: 20px;";
@@ -88,8 +87,6 @@ function renderRealSections(isPaid, isTrial, list, matches) {
   // Append categorized sections
   list.appendChild(
     createSection(
-      isPaid || isTrial,
-      isPaid,
       "Possible Direct Links",
       direct,
       "Direct links to the host's website."
@@ -97,8 +94,6 @@ function renderRealSections(isPaid, isTrial, list, matches) {
   );
   list.appendChild(
     createSection(
-      isPaid || false,
-      isPaid,
       "Other Portals",
       portals,
       "Booking portals like Expedia or Booking.com."
@@ -106,34 +101,15 @@ function renderRealSections(isPaid, isTrial, list, matches) {
   );
   list.appendChild(
     createSection(
-      isPaid || false,
-      isPaid,
       "Possible Socials",
       socials,
       "Social media links for direct contact."
     )
   );
-
-  // Add a payment button if the user is not paid
-  if (!isPaid) {
-    const paymentButton = document.createElement("button");
-    paymentButton.textContent = "Unlock Full Access";
-    paymentButton.style =
-      "background-color: #4D39FF; color: white; padding: 10px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 20px; font-weight: bold;";
-    paymentButton.onmouseover = () =>
-      (paymentButton.style.backgroundColor = "#3C2BCC");
-    paymentButton.onmouseout = () =>
-      (paymentButton.style.backgroundColor = "#4D39FF");
-    paymentButton.onclick = () => {
-      const extpay = ExtPay("getawaydirect-onetime");
-      extpay.openPaymentPage("Unlock unlimited direct booking links!");
-    };
-    list.appendChild(paymentButton);
-  }
 }
 
 // Helper function to create each section
-function createSection(shouldRender, isPaid, title, items, infoText) {
+function createSection(title, items, infoText) {
   const section = document.createElement("div");
   section.style = "margin-bottom: 20px;";
 
@@ -173,32 +149,18 @@ function createSection(shouldRender, isPaid, title, items, infoText) {
       button.style =
         "display: flex; align-items: center; gap: 10px; padding: 10px; border: none; background-color: #f5f5f5; cursor: pointer; border-radius: 8px; transition: background-color 0.3s; margin-bottom: 10px; width: 100%;";
 
-      if (!shouldRender || (shouldRender && !isPaid && index > 0)) {
-        // Blur effect for additional links if the user is not paid -> only allow one direct link
-        button.style.filter = "blur(3px)";
-        const icon = document.createElement("img");
-        icon.src = match.source_icon;
-        icon.alt = `${match.source} icon`;
-        icon.style = "width: 20px; height: 20px;";
+      const icon = document.createElement("img");
+      icon.src = match.source_icon;
+      icon.alt = `${match.source} icon`;
+      icon.style = "width: 20px; height: 20px;";
 
-        const text = document.createElement("span");
-        text.textContent = match.source;
+      const text = document.createElement("span");
+      text.textContent = match.source;
 
-        button.appendChild(icon);
-        button.appendChild(text);
-      } else {
-        const icon = document.createElement("img");
-        icon.src = match.source_icon;
-        icon.alt = `${match.source} icon`;
-        icon.style = "width: 20px; height: 20px;";
+      button.appendChild(icon);
+      button.appendChild(text);
+      button.onclick = () => window.open(match.link, "_blank");
 
-        const text = document.createElement("span");
-        text.textContent = match.source;
-
-        button.appendChild(icon);
-        button.appendChild(text);
-        button.onclick = () => window.open(match.link, "_blank");
-      }
       section.appendChild(button);
     });
   }

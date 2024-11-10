@@ -27,7 +27,7 @@
         "https://www.airbnb.it/*",
         "https://www.airbnb.es/*"
       ],
-      "js": ["ExtPay.js", "content.js", "list.js", "utils.js"],
+      "js": ["content.js", "list.js", "utils.js"],
       "css": ["tooltip.css", "skeleton.css"]
     }
   ],
