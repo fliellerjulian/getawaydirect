@@ -43,7 +43,7 @@ window.addEventListener("load", function () {
           !document.getElementById("getaway-list")
         ) {
           extpay.getUser().then((user) => {
-            const isTrial = !result.searchCount || result.searchCount < 5;
+            const isTrial = !result.searchCount || result.searchCount < 3;
             buildList(user.paid, isTrial, mainImage, title, subtitle, location);
           });
         }
