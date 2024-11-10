@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>We’d Love Your Feedback!</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f5f7fa;
+      }
+
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 50px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        width: 700px;
+        height: 700px;
+      }
+
+      .logo {
+        width: 100px;
+        margin-bottom: 30px;
+        border-radius: 10px;
+      }
+
+      h1 {
+        color: #4d39ff;
+        font-size: 28px;
+        margin-bottom: 25px;
+      }
+
+      .content p {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        margin-top: 40px;
+      }
+
+      .btn {
+        padding: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease-in-out;
+        display: inline-block;
+        font-size: 18px;
+        width: 100%;
+      }
+
+      .review-btn {
+        background-color: #4d39ff;
+        color: #fff;
+      }
+
+      .review-btn:hover {
+        background-color: #392db2;
+      }
+
+      .feature-btn {
+        background-color: #ffd700;
+        color: #333;
+      }
+
+      .feature-btn:hover {
+        background-color: #ffb300;
+      }
+
+      footer {
+        margin-top: 50px;
+        font-size: 16px;
+      }
+
+      footer a {
+        color: #4d39ff;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <img src="assets/logo.png" alt="Getaway Direct Logo" class="logo" />
+        <h1>Thank You for using getaway.direct! 🎉</h1>
+      </header>
+
+      <section class="content">
+        <p>
+          We hope you're enjoying your experience and saving on your bookings!
+          🌴
+        </p>
+        <p>
+          If you have a moment, we’d really appreciate your feedback. It helps
+          us improve and bring more features that you’ll love!
+        </p>
+
+        <div class="button-group">
+          <a
+            href="https://chromewebstore.google.com/detail/getawaydirect-find-direct/kaceafnpngkblbfgeeebmhkdlihalbhb/reviews"
+            target="_blank"
+            class="btn review-btn"
+          >
+            ⭐️ Leave a Google Review
+          </a>
+          <a
+            href="https://x.com/fliellerjulian"
+            target="_blank"
+            class="btn feature-btn"
+          >
+            💡 Share a Feature Request
+          </a>
+        </div>
+      </section>
+
+      <footer>
+        <p>
+          Follow me on
+          <a href="https://twitter.com/fliellerjulian" target="_blank"
+            >@fliellerjulian</a
+          >
+          for updates!
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

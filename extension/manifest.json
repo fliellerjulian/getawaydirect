@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Getaway.Direct: Find Direct Host Links for Airbnb Listings",
   "version": "1.3",
-  "description": "Save an average of $35 per night! Connect directly with property hosts for your next stay.",
+  "description": "Save $35/night on your next stay! Connect directly with property hosts",
   "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"
