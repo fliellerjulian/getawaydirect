@@ -8,6 +8,7 @@ from urls import normalize_url
 import nest_asyncio
 import urllib.parse
 from serp_api import * 
+from emails import send_email_notification
 
 load_dotenv()
 nest_asyncio.apply()  # Apply nest_asyncio to allow nested event loops
@@ -62,6 +63,10 @@ def search():
 
         apikey = get_valid_api_key()
         if not apikey:
+            send_email_notification(
+                subject="Urgent: No valid API key found!",
+                body="All available API for getaway.direct are invalid"
+            )
             return jsonify({'error': 'No valid API key found.'}), 500
         
         lensUrl = f'https://serpapi.com/search.json?engine=google_lens&url={imageUrl.split("?")[0]}&api_key={apikey}'
