@@ -5,12 +5,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Get all API keys from .env file
 API_KEYS = [
+    os.getenv("serp_api_key_julian"),
+    os.getenv("serp_api_key_eliz")
+] + [
     os.getenv(f"serp_api_key_{i}") for i in range(1, 21)
 ]
-API_KEYS.append(os.getenv("serp_api_key_julian"))
-API_KEYS.append(os.getenv("serp_api_key_eliz"))
 
 def check_serpapi_credits(api_key):
     """Check the remaining credits for a given SerpApi key."""
