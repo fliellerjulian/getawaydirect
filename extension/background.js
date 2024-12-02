@@ -33,3 +33,13 @@ chrome.runtime.onMessage.addListener(function (
     return true; // Ensures async `sendResponse` works as expected
   }
 });
+
+// Set the URL to open when the extension is uninstalled
+chrome.runtime.setUninstallURL(
+  "https://forms.gle/uL6X8jqbqMAvUr528",
+  function () {
+    if (chrome.runtime.lastError) {
+      console.error("Error setting uninstall URL:", chrome.runtime.lastError);
+    }
+  }
+);
