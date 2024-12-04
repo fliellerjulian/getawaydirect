@@ -1,3 +1,4 @@
+// Function to build the main list
 function buildList(mainImage, title, subtitle, location) {
   if (document.getElementById("getaway-list")) {
     return; // Exit if the list is already present
@@ -17,11 +18,11 @@ function buildList(mainImage, title, subtitle, location) {
     "display: flex; align-items: center; margin-bottom: 20px; gap: 10px;";
   const logoIcon = document.createElement("img");
   logoIcon.src = chrome.runtime.getURL("assets/logo.png");
-  logoIcon.style = "width: 20px; height: 20px;border-radius: 5px;";
+  logoIcon.style = "width: 20px; height: 20px; border-radius: 5px;";
   logoContainer.appendChild(logoIcon);
   const logoText = document.createElement("span");
   logoText.textContent = "getaway.direct";
-  logoText.style = "font-size: 14px; font-weight: bold;color: #4D39FF;";
+  logoText.style = "font-size: 14px; font-weight: bold; color: #4D39FF;";
   logoContainer.appendChild(logoText);
   list.appendChild(logoContainer);
 
@@ -66,6 +67,31 @@ function createSkeletonSection() {
   return skeletonSection;
 }
 
+// Function to add support button
+function addSupportButton() {
+  const supportContainer = document.createElement("div");
+  supportContainer.style = "width: 100%;";
+
+  const supportButton = document.createElement("button");
+  supportButton.style =
+    "display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #FFD700; color: #000; border: none; border-radius: 8px; padding: 10px; font-size: 16px; cursor: pointer; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px; transition: background-color 0.3s;";
+  supportButton.onmouseover = () =>
+    (supportButton.style.backgroundColor = "#FFC300");
+  supportButton.onmouseout = () =>
+    (supportButton.style.backgroundColor = "#FFD700");
+  supportButton.onclick = () =>
+    window.open("https://buymeacoffee.com/fliellerjulian", "_blank");
+
+  const buttonText = document.createElement("span");
+  buttonText.textContent = "☕ Buy Me a Coffee";
+  buttonText.style = "flex: 1; text-align: left;";
+
+  supportButton.appendChild(buttonText);
+  supportContainer.appendChild(supportButton);
+
+  return supportContainer;
+}
+
 // Function to render real sections with data
 function renderRealSections(list, matches) {
   if (!matches["success"]) {
@@ -74,7 +100,7 @@ function renderRealSections(list, matches) {
     const errorText = document.createElement("p");
     errorText.textContent =
       "We’re having trouble retrieving the information right now. Please check your internet connection, or try again later. If the issue persists, please contact support.";
-    errorText.style = "color: #333; font-size:14px;";
+    errorText.style = "color: #333; font-size: 14px;";
     errorSection.appendChild(errorText);
     list.appendChild(errorSection);
     return;
@@ -104,6 +130,14 @@ function renderRealSections(list, matches) {
       "Possible Socials",
       socials,
       "Social media links for direct contact."
+    )
+  );
+
+  list.appendChild(
+    createSection(
+      "Support this Project",
+      socials,
+      "Your support helps keep this tool free and allows me to continue improving it."
     )
   );
 }
@@ -138,7 +172,9 @@ function createSection(title, items, infoText) {
   sectionHeadingContainer.appendChild(headingInfoIcon);
   section.appendChild(sectionHeadingContainer);
 
-  if (items.length === 0) {
+  if (title === "Support this Project") {
+    section.appendChild(addSupportButton());
+  } else if (items.length === 0) {
     const placeholder = document.createElement("p");
     placeholder.textContent = "No matches found";
     placeholder.style = "color: #888; font-style: italic;";
