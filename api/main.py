@@ -62,13 +62,16 @@ def search():
             title = f"{title} {subtitle}"
 
         apikey = get_valid_api_key()
+        
         if not apikey:
+            '''
             send_email_notification(
                 subject="Urgent: No valid API key found!",
                 body="All available API for getaway.direct are invalid"
             )
+            '''
             return jsonify({'error': 'No valid API key found.'}), 500
-        
+
         lensUrl = f'https://serpapi.com/search.json?engine=google_lens&url={imageUrl.split("?")[0]}&api_key={apikey}'
         searchUrl_title = f'https://serpapi.com/search.json?engine=google&q={urllib.parse.quote(title)}&api_key={apikey}'
 
