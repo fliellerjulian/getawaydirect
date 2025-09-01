@@ -7,7 +7,10 @@
   "background": {
     "service_worker": "background.js"
   },
-  "host_permissions": ["https://api.getaway.direct/*"],
+  "host_permissions": [
+    "https://api.getaway.direct/*",
+    "http://127.0.0.1:5000/*"
+  ],
   "icons": {
     "16": "assets/logos/logo-16.png",
     "48": "assets/logos/logo-48.png",
@@ -27,7 +30,7 @@
         "https://www.airbnb.it/*",
         "https://www.airbnb.es/*"
       ],
-      "js": ["content.js", "list.js", "utils.js"],
+      "js": ["config.js", "content.js", "list.js", "utils.js"],
       "css": ["tooltip.css", "skeleton.css"]
     }
   ],

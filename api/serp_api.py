@@ -6,10 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_KEYS = [
-    os.getenv("serp_api_key_julian"),
-    os.getenv("serp_api_key_eliz")
-] + [
-    os.getenv(f"serp_api_key_{i}") for i in range(1, 21)
+    os.getenv(f"serp_api_key_{i}") for i in range(1, 22)
 ]
 
 def check_serpapi_credits(api_key):

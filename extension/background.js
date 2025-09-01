@@ -1,3 +1,6 @@
+// Configuration is loaded from config.js
+// Update config.js or your .env file to change the API URL
+
 chrome.runtime.onMessage.addListener(function (
   message,
   sender,
@@ -6,9 +9,9 @@ chrome.runtime.onMessage.addListener(function (
   if (message.type === "searchImage") {
     let url;
     if (message.location) {
-      url = `http://127.0.0.1:5000/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}&location=${message.location}`;
+      url = `${CONFIG.API_URL}/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}&location=${message.location}`;
     } else {
-      url = `http://127.0.0.1:5000/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
+      url = `${CONFIG.API_URL}/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
     }
     fetch(url)
       .then((res) => {
