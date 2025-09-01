@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import asyncio
 import aiohttp
 import os
@@ -8,12 +9,12 @@ from urls import normalize_url
 import nest_asyncio
 import urllib.parse
 from serp_api import * 
-from emails import send_email_notification
 
 load_dotenv()
 nest_asyncio.apply()  # Apply nest_asyncio to allow nested event loops
 
 app = Flask(__name__)
+CORS(app, origins="*")  # Allow all origins
 
 # Define portal sources for easy matching
 PORTAL_SOURCES = {
@@ -64,12 +65,6 @@ def search():
         apikey = get_valid_api_key()
         
         if not apikey:
-            '''
-            send_email_notification(
-                subject="Urgent: No valid API key found!",
-                body="All available API for getaway.direct are invalid"
-            )
-            '''
             return jsonify({'error': 'No valid API key found.'}), 500
 
         lensUrl = f'https://serpapi.com/search.json?engine=google_lens&url={imageUrl.split("?")[0]}&api_key={apikey}'
@@ -120,18 +115,7 @@ def search():
         return jsonify({'error': str(e)}), 500
     
     
-@app.route('/submit', methods=['GET'])
-def submit():
-    try:
-        current_url = request.args.get('current_url')
-        submitted_url = request.args.get('submitted_url')
-
-    except Exception as e:
-        print(traceback.format_exc())
-        return jsonify({'error': str(e)}), 500
-
-'''
 if __name__ == '__main__':
     app.run()
-'''
+
 

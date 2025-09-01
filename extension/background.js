@@ -6,9 +6,9 @@ chrome.runtime.onMessage.addListener(function (
   if (message.type === "searchImage") {
     let url;
     if (message.location) {
-      url = `https://api.getaway.direct/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}&location=${message.location}`;
+      url = `http://127.0.0.1:5000/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}&location=${message.location}`;
     } else {
-      url = `https://api.getaway.direct/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
+      url = `http://127.0.0.1:5000/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
     }
     fetch(url)
       .then((res) => {
