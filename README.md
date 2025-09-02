@@ -172,8 +172,6 @@ Health check endpoint.
 The system supports multiple SerpAPI keys for better reliability. Add your keys to the `.env` file:
 
 ```bash
-serp_api_key_julian=your_key_1
-serp_api_key_eliz=your_key_2
 serp_api_key_1=your_key_3
 # ... up to serp_api_key_20
 ```
