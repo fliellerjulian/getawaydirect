@@ -32,52 +32,94 @@ def check_python_version():
     print(f"✅ Python {version.major}.{version.minor}.{version.micro} is compatible")
     return True
 
-def create_env_file():
-    """Create .env file if it doesn't exist."""
-    env_file = Path(".env")
-    if env_file.exists():
-        print("✅ .env file already exists")
-        return True
+def create_env_files():
+    """Create .env files in both api and extension folders."""
     
-    print("📝 Creating .env file...")
-    try:
-        with open(env_file, "w") as f:
-            f.write("# API Configuration\n")
-            f.write("BASE_URL=http://127.0.0.1:5000\n\n")
-            f.write("# SerpAPI Configuration\n")
-            f.write("# Get your API keys from https://serpapi.com/\n\n")
-            f.write("# Add your API keys here:\n")
-            f.write("serp_api_key_1=your_first_api_key_here\n")
-            f.write("serp_api_key_2=your_second_api_key_here\n")
-            f.write("serp_api_key_3=your_third_api_key_here\n")
-            f.write("# Add more keys as needed (up to serp_api_key_20)\n")
-        
-        print("✅ .env file created")
-        print("⚠️  Please edit .env file and add your actual SerpAPI keys")
-        return True
-    except Exception as e:
-        print(f"❌ Failed to create .env file: {e}")
-        return False
+    # Create api/.env for SerpAPI keys
+    api_env_file = Path("api/.env")
+    if api_env_file.exists():
+        print("✅ API .env file already exists")
+    else:
+        print("📝 Creating API .env file...")
+        try:
+            with open(api_env_file, "w") as f:
+                f.write("# SerpAPI Configuration\n")
+                f.write("# Get your API keys from https://serpapi.com/\n\n")
+                f.write("# Add your API keys here:\n")
+                f.write("serp_api_key_1=your_first_api_key_here\n")
+                f.write("serp_api_key_2=your_second_api_key_here\n")
+                f.write("serp_api_key_3=your_third_api_key_here\n")
+                f.write("# Add more keys as needed (up to serp_api_key_21)\n")
+            
+            print("✅ API .env file created")
+            print("⚠️  Please edit api/.env file and add your actual SerpAPI keys")
+        except Exception as e:
+            print(f"❌ Failed to create API .env file: {e}")
+            return False
+    
+    # Create extension/.env for BASE_URL only
+    extension_env_file = Path("extension/.env")
+    if extension_env_file.exists():
+        print("✅ Extension .env file already exists")
+    else:
+        print("📝 Creating Extension .env file...")
+        try:
+            with open(extension_env_file, "w") as f:
+                f.write("# Extension Configuration\n")
+                f.write("# Set the base URL for the API server\n")
+                f.write("BASE_URL=http://127.0.0.1:5000\n")
+            
+            print("✅ Extension .env file created")
+        except Exception as e:
+            print(f"❌ Failed to create Extension .env file: {e}")
+            return False
+    
+    return True
 
 def generate_extension_config():
-    """Generate extension config.js from .env file."""
-    load_dotenv()
+    """Generate extension config in background.js from extension/.env file."""
+    # Load .env from extension folder for BASE_URL
+    extension_env_path = Path("extension/.env")
+    if extension_env_path.exists():
+        load_dotenv(extension_env_path)
+    else:
+        # Fallback to root .env if extension .env doesn't exist
+        load_dotenv()
     
     base_url = os.getenv('BASE_URL', 'http://127.0.0.1:5000')
-    config_file = Path("extension/config.js")
+    background_file = Path("extension/background.js")
     
     print(f"🔧 Generating extension config with API URL: {base_url}")
     
     try:
-        with open(config_file, "w") as f:
-            f.write("// Extension configuration\n")
-            f.write("// This file is auto-generated from .env file\n")
-            f.write("// Update your .env file and run setup.py to regenerate\n\n")
-            f.write(f"const CONFIG = {{\n")
-            f.write(f"    API_URL: '{base_url}'\n")
-            f.write("};\n")
+        # Read the current background.js file
+        with open(background_file, "r") as f:
+            content = f.read()
         
-        print("✅ Extension config generated")
+        # Replace the CONFIG object with the new API URL
+        import re
+        new_config = f"const CONFIG = {{\n    API_URL: '{base_url}'\n}};"
+        
+        # Use regex to replace the CONFIG object
+        pattern = r"const CONFIG = \{[^}]*\};"
+        if re.search(pattern, content):
+            new_content = re.sub(pattern, new_config, content)
+        else:
+            # If no CONFIG object found, insert it after the comments
+            lines = content.split('\n')
+            insert_index = 0
+            for i, line in enumerate(lines):
+                if line.strip().startswith('//') and 'CONFIG' in line:
+                    insert_index = i + 1
+                    break
+            lines.insert(insert_index, new_config)
+            new_content = '\n'.join(lines)
+        
+        # Write the updated content back
+        with open(background_file, "w") as f:
+            f.write(new_content)
+        
+        print("✅ Extension config generated in background.js")
         return True
     except Exception as e:
         print(f"❌ Failed to generate extension config: {e}")
@@ -92,7 +134,7 @@ def print_extension_setup():
     print("3. Click 'Load unpacked' and select the 'extension/' folder")
     print("4. The extension is now configured to use your API URL!")
 print("\n💡 To change the API URL:")
-print("   - Edit the BASE_URL in your .env file")
+print("   - Edit the BASE_URL in your extension/.env file")
 print("   - Run: python3 setup.py")
 print("   - Reload the extension")
 
@@ -111,7 +153,7 @@ def main():
         sys.exit(1)
     
     # Create .env file
-    create_env_file()
+    create_env_files()
     
     # Generate extension config
     generate_extension_config()
@@ -129,9 +171,10 @@ def main():
     print("\n" + "=" * 50)
     print("🎉 Setup completed!")
     print("\n📋 Next steps:")
-    print("   1. Edit .env file and add your SerpAPI keys")
-    print("   2. Run: cd api && python3 main.py")
-    print("   3. Load the browser extension (see instructions above)")
+    print("   1. Edit api/.env file and add your SerpAPI keys")
+    print("   2. Edit extension/.env file and set your BASE_URL")
+    print("   3. Run: cd api && python3 main.py")
+    print("   4. Load the browser extension (see instructions above)")
     print("\n📖 See README.md for detailed instructions")
 
 if __name__ == "__main__":

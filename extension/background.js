@@ -1,5 +1,6 @@
-// Configuration is loaded from config.js
-// Update config.js or your .env file to change the API URL
+const CONFIG = {
+  API_URL: "https://api.getaway.direct",
+};
 
 chrome.runtime.onMessage.addListener(function (
   message,

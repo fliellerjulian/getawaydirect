@@ -2,6 +2,10 @@
 
 A browser extension and API service that helps users find direct booking options for vacation rentals by bypassing third-party booking platforms.
 
+### Support this project
+
+help keep the project free and open source: https://buymeacoffee.com/fliellerjulian
+
 ## 🚀 Features
 
 - **Browser Extension**: Chrome extension that analyzes vacation rental listings
@@ -18,7 +22,6 @@ getawaydirect/
 │   ├── main.py         # Main API endpoints
 │   ├── serp_api.py     # SerpAPI integration
 │   ├── urls.py         # URL normalization utilities
-│   └── tests/          # API tests
 ├── extension/          # Chrome browser extension
 │   ├── manifest.json   # Extension manifest
 │   ├── background.js   # Extension background script
@@ -62,12 +65,13 @@ python3 setup.py
    ```
 
 3. **Set up environment variables**
-   Copy the example environment file and add your API keys:
+   The setup script will create environment files in both api and extension folders:
 
    ```bash
-   cp .env.example .env
-   # Edit .env file and add your SerpAPI keys
-   # The BASE_URL will be used to generate extension/config.js
+   # The setup script creates:
+   # - api/.env (for SerpAPI keys)
+   # - extension/.env (for BASE_URL)
+   # Edit both files with your actual values
    ```
 
 4. **Test your API keys**
@@ -96,22 +100,11 @@ python3 setup.py
 
 2. **Extension is automatically configured**
 
-   - The extension uses the API URL from `extension/config.js` (auto-generated from `.env`)
+   - The extension uses the API URL from `extension/background.js` (auto-generated from `.env`)
    - No manual configuration needed!
 
 3. **Use the extension**
    - open airbnb.com, click on any listing and see the getaway.direct container being displayed
-
-## 🧪 Testing
-
-### API Tests
-
-Run the API tests to ensure everything is working:
-
-```bash
-cd api
-python tests/test.py
-```
 
 ### Manual Testing
 
@@ -197,7 +190,7 @@ The API is configured to accept requests from any domain (`origins="*"`). For pr
 
 ### Extension Configuration
 
-The browser extension uses the API URL from `extension/config.js`:
+The browser extension uses the API URL from `extension/background.js`:
 
 - **Local Development**: `http://127.0.0.1:5000`
 - **Production**: `https://api.getaway.direct`
@@ -205,10 +198,11 @@ The browser extension uses the API URL from `extension/config.js`:
 
 To change the API URL:
 
-1. Run `python3 setup.py` to regenerate `extension/config.js`
-2. Reload the extension in Chrome
+1. Edit the `BASE_URL` in your `extension/.env` file
+2. Run `python3 setup.py` to regenerate the config in `background.js`
+3. Reload the extension in Chrome
 
-The `config.js` file is auto-generated from your `.env` file during setup.
+The configuration is auto-generated from your `extension/.env` file during setup.
 
 ## 📄 License
 
@@ -237,7 +231,3 @@ If you encounter any issues or have questions:
 - Flask API backend
 - SerpAPI integration
 - Direct booking detection
-
-### Support this project
-
-help keep the project free and open source: https://buymeacoffee.com/fliellerjulian
