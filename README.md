@@ -70,7 +70,6 @@ python3 setup.py
    ```bash
    # The setup script creates:
    # - api/.env (for SerpAPI keys)
-   # - extension/.env (for BASE_URL)
    # Edit both files with your actual values
    ```
 
@@ -100,7 +99,7 @@ python3 setup.py
 
 2. **Extension is automatically configured**
 
-   - The extension uses the API URL from `extension/background.js` (auto-generated from `.env`)
+   - The extension uses the API URL from `extension/constants.js` - set to `http://127.0.0.1:5000` by default
    - No manual configuration needed!
 
 3. **Use the extension**
@@ -191,16 +190,10 @@ The API is configured to accept requests from any domain (`origins="*"`). For pr
 The browser extension uses the API URL from `extension/background.js`:
 
 - **Local Development**: `http://127.0.0.1:5000`
-- **Production**: `https://api.getaway.direct`
-- **Custom Server**: Any HTTPS URL
 
 To change the API URL:
 
-1. Edit the `BASE_URL` in your `extension/.env` file
-2. Run `python3 setup.py` to regenerate the config in `background.js`
-3. Reload the extension in Chrome
-
-The configuration is auto-generated from your `extension/.env` file during setup.
+1. Edit line 7 in `extension/constants.js`
 
 ## 📄 License
 

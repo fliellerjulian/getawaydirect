@@ -56,74 +56,8 @@ def create_env_files():
         except Exception as e:
             print(f"❌ Failed to create API .env file: {e}")
             return False
-    
-    # Create extension/.env for BASE_URL only
-    extension_env_file = Path("extension/.env")
-    if extension_env_file.exists():
-        print("✅ Extension .env file already exists")
-    else:
-        print("📝 Creating Extension .env file...")
-        try:
-            with open(extension_env_file, "w") as f:
-                f.write("# Extension Configuration\n")
-                f.write("# Set the base URL for the API server\n")
-                f.write("BASE_URL=http://127.0.0.1:5000\n")
-            
-            print("✅ Extension .env file created")
-        except Exception as e:
-            print(f"❌ Failed to create Extension .env file: {e}")
-            return False
-    
+        
     return True
-
-def generate_extension_config():
-    """Generate extension config in background.js from extension/.env file."""
-    # Load .env from extension folder for BASE_URL
-    extension_env_path = Path("extension/.env")
-    if extension_env_path.exists():
-        load_dotenv(extension_env_path)
-    else:
-        # Fallback to root .env if extension .env doesn't exist
-        load_dotenv()
-    
-    base_url = os.getenv('BASE_URL', 'http://127.0.0.1:5000')
-    background_file = Path("extension/background.js")
-    
-    print(f"🔧 Generating extension config with API URL: {base_url}")
-    
-    try:
-        # Read the current background.js file
-        with open(background_file, "r") as f:
-            content = f.read()
-        
-        # Replace the CONFIG object with the new API URL
-        import re
-        new_config = f"const CONFIG = {{\n    API_URL: '{base_url}'\n}};"
-        
-        # Use regex to replace the CONFIG object
-        pattern = r"const CONFIG = \{[^}]*\};"
-        if re.search(pattern, content):
-            new_content = re.sub(pattern, new_config, content)
-        else:
-            # If no CONFIG object found, insert it after the comments
-            lines = content.split('\n')
-            insert_index = 0
-            for i, line in enumerate(lines):
-                if line.strip().startswith('//') and 'CONFIG' in line:
-                    insert_index = i + 1
-                    break
-            lines.insert(insert_index, new_config)
-            new_content = '\n'.join(lines)
-        
-        # Write the updated content back
-        with open(background_file, "w") as f:
-            f.write(new_content)
-        
-        print("✅ Extension config generated in background.js")
-        return True
-    except Exception as e:
-        print(f"❌ Failed to generate extension config: {e}")
-        return False
 
 def print_extension_setup():
     """Print extension setup instructions."""

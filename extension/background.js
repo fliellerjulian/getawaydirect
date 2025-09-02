@@ -1,18 +1,28 @@
-const CONFIG = {
-  API_URL: "https://api.getaway.direct",
-};
+/**
+ * Background script for Getaway Direct extension
+ * Handles API communication and extension lifecycle events
+ */
 
+import { API_CONFIG, EXTERNAL_URLS } from "./background-constants.js";
+
+/**
+ * Listens for messages from content scripts
+ * @param {Object} message - The message object containing search parameters
+ * @param {Object} sender - Information about the sender
+ * @param {Function} senderResponse - Function to send response back to sender
+ * @returns {boolean} - Returns true to indicate async response
+ */
 chrome.runtime.onMessage.addListener(function (
   message,
-  sender,
+  _sender,
   senderResponse
 ) {
   if (message.type === "searchImage") {
     let url;
     if (message.location) {
-      url = `${CONFIG.API_URL}/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}&location=${message.location}`;
+      url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.SEARCH}?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}&location=${message.location}`;
     } else {
-      url = `${CONFIG.API_URL}/search?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
+      url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.SEARCH}?imageUrl=${message.imageUrl}&title=${message.name}&subtitle=${message.subtitle}`;
     }
     fetch(url)
       .then((res) => {
@@ -38,12 +48,12 @@ chrome.runtime.onMessage.addListener(function (
   }
 });
 
-// Set the URL to open when the extension is uninstalled
-chrome.runtime.setUninstallURL(
-  "https://forms.gle/uL6X8jqbqMAvUr528",
-  function () {
-    if (chrome.runtime.lastError) {
-      console.error("Error setting uninstall URL:", chrome.runtime.lastError);
-    }
+/**
+ * Sets the URL to open when the extension is uninstalled
+ * Redirects users to a feedback form
+ */
+chrome.runtime.setUninstallURL(EXTERNAL_URLS.UNINSTALL_FORM, function () {
+  if (chrome.runtime.lastError) {
+    console.error("Error setting uninstall URL:", chrome.runtime.lastError);
   }
-);
+});

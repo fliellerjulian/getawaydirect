@@ -1,28 +1,40 @@
-// Function to build the main list
+/**
+ * Builds the main list element and inserts it into the Airbnb page
+ */
+
+/**
+ * Builds the main list element and inserts it into the Airbnb page
+ * @param {HTMLElement} mainImage - The main property image element
+ * @param {string} title - The property title
+ * @param {string} subtitle - The property subtitle (unused)
+ * @param {string} location - The property location
+ */
 function buildList(mainImage, title, subtitle, location) {
-  if (document.getElementById("getaway-list")) {
-    return; // Exit if the list is already present
+  if (document.getElementById(ELEMENT_IDS.GETAWAY_LIST)) {
+    return;
   }
 
   const list = document.createElement("div");
-  list.id = "getaway-list";
-  list.style =
-    "border: 2px solid #4D39FF; border-radius: 12px; padding: 24px; box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px; margin-top: 24px;";
+  list.id = ELEMENT_IDS.GETAWAY_LIST;
+  list.className = "getaway-list";
 
-  const rightSide = document.getElementsByClassName("_1s21a6e2")[0];
-  const referenceNode = document.getElementsByClassName("_mubbvpq")[0];
+  const rightSide = document.getElementsByClassName(
+    AIRBNB_SELECTORS.RIGHT_SIDE.replace(".", "")
+  )[0];
+  const referenceNode = document.getElementsByClassName(
+    AIRBNB_SELECTORS.REFERENCE_NODE.replace(".", "")
+  )[0];
 
   // Logo and Title
   const logoContainer = document.createElement("div");
-  logoContainer.style =
-    "display: flex; align-items: center; margin-bottom: 20px; gap: 10px;";
+  logoContainer.className = "logo-container";
   const logoIcon = document.createElement("img");
-  logoIcon.src = chrome.runtime.getURL("assets/logo.png");
-  logoIcon.style = "width: 20px; height: 20px; border-radius: 5px;";
+  logoIcon.src = chrome.runtime.getURL(BRAND.LOGO_PATH);
+  logoIcon.className = "logo-icon";
   logoContainer.appendChild(logoIcon);
   const logoText = document.createElement("span");
-  logoText.textContent = "getaway.direct";
-  logoText.style = "font-size: 14px; font-weight: bold; color: #4D39FF;";
+  logoText.textContent = BRAND.NAME;
+  logoText.className = "logo-text";
   logoContainer.appendChild(logoText);
   list.appendChild(logoContainer);
 
@@ -51,40 +63,38 @@ function buildList(mainImage, title, subtitle, location) {
   );
 }
 
-// Function to create skeleton placeholders
+/**
+ * Creates skeleton loading placeholders
+ * @returns {HTMLElement} - The skeleton section element
+ */
 function createSkeletonSection() {
   const skeletonSection = document.createElement("div");
-  skeletonSection.id = "skeleton-section";
-  skeletonSection.style = "margin-bottom: 20px;";
+  skeletonSection.id = ELEMENT_IDS.SKELETON_SECTION;
+  skeletonSection.className = "skeleton-section";
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < UI_CONFIG.SKELETON_COUNT; i++) {
     const skeleton = document.createElement("div");
-    skeleton.className = "skeleton";
-    skeleton.style =
-      "width: 100%; height: 24px; margin-bottom: 10px; background: #e0e0e0; border-radius: 8px; animation: shimmer 1.5s infinite linear;";
+    skeleton.className = "skeleton skeleton-item";
     skeletonSection.appendChild(skeleton);
   }
   return skeletonSection;
 }
 
-// Function to add support button
+/**
+ * Creates a support button for donations
+ * @returns {HTMLElement} - The support container element
+ */
 function addSupportButton() {
   const supportContainer = document.createElement("div");
-  supportContainer.style = "width: 100%;";
+  supportContainer.className = "support-container";
 
   const supportButton = document.createElement("button");
-  supportButton.style =
-    "display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #FFD700; color: #000; border: none; border-radius: 8px; padding: 10px; font-size: 16px; cursor: pointer; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px; transition: background-color 0.3s;";
-  supportButton.onmouseover = () =>
-    (supportButton.style.backgroundColor = "#FFC300");
-  supportButton.onmouseout = () =>
-    (supportButton.style.backgroundColor = "#FFD700");
-  supportButton.onclick = () =>
-    window.open("https://buymeacoffee.com/fliellerjulian", "_blank");
+  supportButton.className = "support-button";
+  supportButton.onclick = () => window.open(EXTERNAL_URLS.SUPPORT, "_blank");
 
   const buttonText = document.createElement("span");
   buttonText.textContent = "☕ Buy Me a Coffee";
-  buttonText.style = "flex: 1; text-align: left;";
+  buttonText.className = "support-button-text";
 
   supportButton.appendChild(buttonText);
   supportContainer.appendChild(supportButton);
@@ -92,15 +102,18 @@ function addSupportButton() {
   return supportContainer;
 }
 
-// Function to render real sections with data
+/**
+ * Renders the actual sections with data from the API
+ * @param {HTMLElement} list - The main list container
+ * @param {Object} matches - The API response containing match data
+ */
 function renderRealSections(list, matches) {
   if (!matches["success"]) {
     const errorSection = document.createElement("div");
-    errorSection.style = "margin-bottom: 20px;";
+    errorSection.className = "error-section";
     const errorText = document.createElement("p");
-    errorText.textContent =
-      "We’re having trouble retrieving the information right now. Please check your internet connection, or try again later. If the issue persists, please contact support.";
-    errorText.style = "color: #333; font-size: 14px;";
+    errorText.textContent = ERROR_MESSAGES.FETCH_ERROR;
+    errorText.className = "error-text";
     errorSection.appendChild(errorText);
     list.appendChild(errorSection);
     return;
@@ -142,26 +155,30 @@ function renderRealSections(list, matches) {
   );
 }
 
-// Helper function to create each section
+/**
+ * Creates a section with title, items, and info tooltip
+ * @param {string} title - The section title
+ * @param {Array} items - Array of items to display in the section
+ * @param {string} infoText - Tooltip text for the info icon
+ * @returns {HTMLElement} - The section element
+ */
 function createSection(title, items, infoText) {
   const section = document.createElement("div");
-  section.style = "margin-bottom: 20px;";
+  section.className = "section";
 
   const sectionHeadingContainer = document.createElement("div");
-  sectionHeadingContainer.style =
-    "display: flex; gap: 10px; align-items: center;";
+  sectionHeadingContainer.className = "section-heading-container";
 
   const headingTitle = document.createElement("h3");
   headingTitle.textContent = title;
-  headingTitle.style = "margin-bottom: 10px; font-size: 16px;";
+  headingTitle.className = "section-title";
 
   // Info icon with tooltip
   const headingInfoIcon = document.createElement("div");
-  headingInfoIcon.className = "tooltip";
-  headingInfoIcon.style = "position: relative; display: inline-block;";
-  headingInfoIcon.innerHTML = `<img src="${chrome.runtime.getURL(
-    "assets/info.png"
-  )}" style="width: 16px; height: 16px; margin-bottom: 10px; cursor: pointer;">`;
+  headingInfoIcon.className = "tooltip info-icon";
+  const infoImg = document.createElement("img");
+  infoImg.src = chrome.runtime.getURL(BRAND.INFO_ICON_PATH);
+  headingInfoIcon.appendChild(infoImg);
 
   const tooltipText = document.createElement("span");
   tooltipText.textContent = infoText;
@@ -172,26 +189,26 @@ function createSection(title, items, infoText) {
   sectionHeadingContainer.appendChild(headingInfoIcon);
   section.appendChild(sectionHeadingContainer);
 
-  if (title === "Support this Project") {
+  if (title === SECTIONS.SUPPORT.title) {
     section.appendChild(addSupportButton());
   } else if (items.length === 0) {
     const placeholder = document.createElement("p");
-    placeholder.textContent = "No matches found";
-    placeholder.style = "color: #888; font-style: italic;";
+    placeholder.textContent = ERROR_MESSAGES.NO_MATCHES;
+    placeholder.className = "placeholder-text";
     section.appendChild(placeholder);
   } else {
-    items.forEach((match, index) => {
+    items.forEach((match, _index) => {
       const button = document.createElement("button");
-      button.style =
-        "display: flex; align-items: center; gap: 10px; padding: 10px; border: none; background-color: #f5f5f5; cursor: pointer; border-radius: 8px; transition: background-color 0.3s; margin-bottom: 10px; width: 100%;";
+      button.className = "match-button";
 
       const icon = document.createElement("img");
       icon.src = match.source_icon;
       icon.alt = `${match.source} icon`;
-      icon.style = "width: 20px; height: 20px;";
+      icon.className = "match-icon";
 
       const text = document.createElement("span");
       text.textContent = match.source;
+      text.className = "match-text";
 
       button.appendChild(icon);
       button.appendChild(text);

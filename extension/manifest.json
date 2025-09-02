@@ -5,7 +5,8 @@
   "description": "Save $35/night on your next stay! Connect directly with property hosts",
   "permissions": [],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "host_permissions": [
     "https://api.getaway.direct/*",
@@ -30,8 +31,8 @@
         "https://www.airbnb.it/*",
         "https://www.airbnb.es/*"
       ],
-      "js": ["content.js", "list.js", "utils.js"],
-      "css": ["tooltip.css", "skeleton.css"]
+      "js": ["constants.js", "utils.js", "content.js", "list.js"],
+      "css": ["tooltip.css", "skeleton.css", "components.css"]
     }
   ],
   "web_accessible_resources": [

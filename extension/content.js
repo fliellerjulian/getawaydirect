@@ -1,25 +1,27 @@
+/**
+ * Content script for Getaway Direct extension
+ * Monitors Airbnb pages for property listings and injects the extension UI
+ */
+/**
+ * Initializes the extension when the page loads
+ * Sets up a MutationObserver to watch for DOM changes
+ */
 window.addEventListener("load", function () {
   const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      //get needed data for
-      const mainImage = document.getElementById("FMP-target");
+    mutations.forEach((_mutation) => {
+      const mainImage = document.getElementById(
+        AIRBNB_SELECTORS.MAIN_IMAGE.replace("#", "")
+      );
       const titleContainer = document.querySelector(
-        "#site-content > div > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div > div._16e70jgn > div > div:nth-child(1) > div > div > div > section > div.t1kjrihn.atm_c8_2x1prs.atm_g3_1jbyh58.atm_fr_11a07z3.atm_cs_10d11i2.atm_c8_sz6sci__oggzyc.atm_g3_17zsb9a__oggzyc.atm_fr_kzfbxz__oggzyc.dir.dir-ltr > h2"
+        AIRBNB_SELECTORS.TITLE_CONTAINER
       );
-      title = titleContainer ? titleContainer.textContent : null;
-
-      //removed
-      /*const subtitleContainer = document.querySelector(
-        "#site-content > div > div:nth-child(1) > div:nth-child(3) > div > div._16e70jgn > div > div:nth-child(1) > div > div > div > section > div.toieuka.atm_c8_2x1prs.atm_g3_1jbyh58.atm_fr_11a07z3.atm_cs_10d11i2.atm_c8_sz6sci__oggzyc.atm_g3_17zsb9a__oggzyc.atm_fr_kzfbxz__oggzyc.dir.dir-ltr > h2"
+      const title = titleContainer ? titleContainer.textContent : null;
+      const mainLocationContainer = document.querySelector(
+        AIRBNB_SELECTORS.MAIN_LOCATION_CONTAINER
       );
-      subtitle = subtitleContainer ? subtitleContainer.textContent : null;*/
-
-      //Find this, to see if location laoded!
-      const MainLocationContainer = document.querySelector(
-        "#site-content > div > div:nth-child(1) > div:nth-child(1) > div:nth-child(5) > div > div > div > div:nth-child(2) > section > div.s14u3lzn.atm_le_74f3fj.atm_le_8opf4g__oggzyc.atm_le_dm248g__qky54b.dir.dir-ltr > div > h2"
-      );
-      // Get actual location -> First, select the container safely
-      const locationContainer = document.getElementsByClassName("_1t2xqmi")[0];
+      const locationContainer = document.getElementsByClassName(
+        AIRBNB_SELECTORS.LOCATION_CONTAINER.replace(".", "")
+      )[0];
       let location = null;
       if (locationContainer) {
         // Create a clone of the element to avoid triggering events on the actual DOM
@@ -33,11 +35,10 @@ window.addEventListener("load", function () {
       if (
         mainImage &&
         title &&
-        //subtitle &&
-        MainLocationContainer &&
-        !document.getElementById("getaway-list")
+        mainLocationContainer &&
+        !document.getElementById(ELEMENT_IDS.GETAWAY_LIST)
       ) {
-        buildList(mainImage, title, "", location); //removed subtitle
+        buildList(mainImage, title, "", location);
       }
     });
   });

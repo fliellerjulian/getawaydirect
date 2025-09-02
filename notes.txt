@@ -1,0 +1,3 @@
+BEFORE RELEASE:
+- adjust api url in connstants.js
+- zip und upload to chrome web store
